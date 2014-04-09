@@ -12,7 +12,7 @@ public class SetSpawnCommand implements BasePvZCommand {
 
 	@Override
 	public void execute(Player player, String[] args) {
-		if (!Main.validate.hasPerm(player, "pvz.set"))
+		if (!Main.validate.hasPerm(player, "pvz.setspawn"))
 			return;
 		if (args.length < 2) {
 			Messages.sendMessage(player, Messages.getMessage("no farm given"));

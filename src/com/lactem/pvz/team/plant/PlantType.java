@@ -1,5 +1,5 @@
 package com.lactem.pvz.team.plant;
 
 public enum PlantType {
-	PEASHOOTER, REPEATER;
+	PEASHOOTER, REPEATER, BONK_CHOY, WINTER_MELON, SUNFLOWER;
 }

@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import com.lactem.pvz.main.Main;
 import com.lactem.pvz.row.Row;
@@ -20,7 +21,9 @@ import com.lactem.pvz.tasks.Countdown;
 import com.lactem.pvz.tasks.Fireworks;
 import com.lactem.pvz.tasks.GameRunnable;
 import com.lactem.pvz.team.plant.PlantTeam;
+import com.lactem.pvz.team.plant.PlantType;
 import com.lactem.pvz.team.zombie.ZombieTeam;
+import com.lactem.pvz.team.zombie.ZombieType;
 import com.lactem.pvz.util.messages.Messages;
 
 public class GameManager {
@@ -71,47 +74,60 @@ public class GameManager {
 	}
 
 	public void startGame(Game game) {
+		updateRows(game);
 		game.setState(GameState.PLAYING);
 		Main.invManager.updateDesc(game);
-		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
-		System.out.println(game.getPlants().toString());
-		while (i.hasNext()) {
-			UUID uuid = i.next();
-			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (player.getUniqueId() == uuid) {
-					Main.invManager.givePlantInventory(player, game.getPlants()
-							.getMembers().get(uuid), game);
-					player.setFoodLevel(20);
-					player.setHealth(20.0);
-					player.setScoreboard(Bukkit.getScoreboardManager()
-							.getNewScoreboard());
-					System.out.println(player.getName() + " "
-							+ game.getPlants().getMembers().get(uuid)); //TODO
-				}
-			}
-		}
-		Iterator<UUID> i2 = game.getZombies().getMembers().keySet().iterator();
-		System.out.println(game.getZombies().toString());
-		while (i2.hasNext()) {
-			UUID uuid = i2.next();
-			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (player.getUniqueId() == uuid) {
-					Main.invManager.giveZombieInventory(player, game
-							.getZombies().getMembers().get(uuid), game);
-					player.setFoodLevel(20);
-					player.setHealth(20.0);
-					player.setScoreboard(Bukkit.getScoreboardManager()
-							.getNewScoreboard());
-					System.out.println(player.getName() + " "
-							+ game.getZombies().getMembers().get(uuid)); //TODO
-				}
-			}
-		}
 		Scoreboard board = game.getBoard();
 		Objective objective = board.registerNewObjective("name", "dummy");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		objective.setDisplayName(ChatColor.translateAlternateColorCodes('&',
 				Main.fileUtils.getConfig().getString("prefix")));
+		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
+		while (i.hasNext()) {
+			UUID uuid = i.next();
+			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (player.getUniqueId() == uuid) {
+					PlantType type = game.getPlants().getMembers().get(uuid);
+					Main.invManager.givePlantInventory(player, type, game);
+					player.setFoodLevel(20);
+					player.setHealth(20.0);
+					player.setScoreboard(Bukkit.getScoreboardManager()
+							.getNewScoreboard());
+					String name = type.toString();
+					Team team = board.getTeam(name);
+					if (team == null) {
+						team = board.registerNewTeam(name);
+						team.setCanSeeFriendlyInvisibles(false);
+						team.setPrefix(ChatColor.translateAlternateColorCodes(
+								'&', "&2"));
+					}
+					team.addPlayer(player);
+				}
+			}
+		}
+		Iterator<UUID> i2 = game.getZombies().getMembers().keySet().iterator();
+		while (i2.hasNext()) {
+			UUID uuid = i2.next();
+			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (player.getUniqueId() == uuid) {
+					ZombieType type = game.getZombies().getMembers().get(uuid);
+					Main.invManager.giveZombieInventory(player, type, game);
+					player.setFoodLevel(20);
+					player.setHealth(20.0);
+					player.setScoreboard(Bukkit.getScoreboardManager()
+							.getNewScoreboard());
+					String name = type.toString();
+					Team team = board.getTeam(name);
+					if (team == null) {
+						team = board.registerNewTeam(name);
+						team.setCanSeeFriendlyInvisibles(false);
+						team.setPrefix(ChatColor.translateAlternateColorCodes(
+								'&', "&4"));
+					}
+					team.addPlayer(player);
+				}
+			}
+		}
 		GameRunnable task = new GameRunnable();
 		task.game = game;
 		int id = Bukkit.getServer().getScheduler()
@@ -121,7 +137,6 @@ public class GameManager {
 
 	public void endGame(final Game game, boolean plantsWon) {
 		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
-		System.out.println(game.getPlants().toString());
 		while (i.hasNext()) {
 			UUID uuid = i.next();
 			for (final Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -131,13 +146,10 @@ public class GameManager {
 					Messages.sendMessage(player, Messages
 							.getMessage(plantsWon ? "plants won"
 									: "zombies won"));
-					System.out.println(player.getName() + " "
-							+ game.getPlants().getMembers().get(uuid)); //TODO
 				}
 			}
 		}
 		Iterator<UUID> i2 = game.getZombies().getMembers().keySet().iterator();
-		System.out.println(game.getZombies().toString());
 		while (i2.hasNext()) {
 			UUID uuid = i2.next();
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -147,8 +159,6 @@ public class GameManager {
 					Messages.sendMessage(player, Messages
 							.getMessage(plantsWon ? "plants won"
 									: "zombies won"));
-					System.out.println(player.getName() + " "
-							+ game.getZombies().getMembers().get(uuid)); //TODO
 				}
 			}
 		}
@@ -170,6 +180,7 @@ public class GameManager {
 	public void restartGame(Game game) {
 		game.getBoard().clearSlot(DisplaySlot.SIDEBAR);
 		game.setBoard(Bukkit.getScoreboardManager().getNewScoreboard());
+		boolean sql = Main.sqlUtils.isUsingMySQL();
 		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
 		while (i.hasNext()) {
 			UUID uuid = i.next();
@@ -178,6 +189,11 @@ public class GameManager {
 					player.teleport(player.getWorld().getSpawnLocation());
 					Main.invManager.removeInventory(player);
 					player.setScoreboard(game.getBoard());
+					Main.sqlUtils
+							.setGamesPlayed(
+									player.getName(),
+									Main.sqlUtils.getGamesPlayed(
+											player.getName(), sql) + 1, sql);
 				}
 			}
 		}
@@ -189,6 +205,11 @@ public class GameManager {
 					player.teleport(player.getWorld().getSpawnLocation());
 					Main.invManager.removeInventory(player);
 					player.setScoreboard(game.getBoard());
+					Main.sqlUtils
+							.setGamesPlayed(
+									player.getName(),
+									Main.sqlUtils.getGamesPlayed(
+											player.getName(), sql) + 1, sql);
 				}
 			}
 		}
@@ -213,28 +234,33 @@ public class GameManager {
 				rows2.add(rows.get(i));
 		}
 		while (rows2.size() > 1) {
-			for (int i = 0; i < rows2.size(); i++) {
-				if (i - 1 >= 0) {
-					TempRow currentRow = rows2.get(i);
-					TempRow previousRow = rows2.get(i - 1);
-					if (plant) {
-						if (currentRow.getPlants().size() < previousRow
-								.getPlants().size())
-							rows2.remove(i);
-						else
-							rows2.remove(i - 1);
-					} else {
-						if (currentRow.getZombies().size() < previousRow
-								.getZombies().size())
-							rows2.remove(i);
-						else
-							rows2.remove(i - 1);
-					}
-					rows2.trimToSize();
+			rows2 = trim(rows2, plant);
+		}
+		return rows2.get(0);
+	}
+
+	private ArrayList<TempRow> trim(ArrayList<TempRow> rows, boolean plant) {
+		ArrayList<TempRow> newRows = new ArrayList<TempRow>();
+		for (int i = 0; i < rows.size(); i++) {
+			if (i - 1 >= 0) {
+				TempRow currentRow = rows.get(i);
+				TempRow previousRow = rows.get(i - 1);
+				if (plant) {
+					if (currentRow.getPlants().size() < previousRow.getPlants()
+							.size())
+						newRows.add(currentRow);
+					else
+						newRows.add(previousRow);
+				} else {
+					if (currentRow.getZombies().size() < previousRow
+							.getZombies().size())
+						newRows.add(currentRow);
+					else
+						newRows.add(previousRow);
 				}
 			}
 		}
-		return rows2.get(0);
+		return newRows;
 	}
 
 	public void updateRows(Game game) {

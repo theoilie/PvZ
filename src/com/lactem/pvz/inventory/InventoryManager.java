@@ -186,10 +186,46 @@ public class InventoryManager {
 			slimeball.setItemMeta(meta);
 			inv.addItem(slimeball);
 			break;
+		case BONK_CHOY:
+			inv.setChestplate(chestplate);
+			inv.setLeggings(leggings);
+			inv.setBoots(boots);
+			inv.addItem(new ItemStack(Material.DIAMOND_SWORD, 1));
+			break;
+		case WINTER_MELON:
+			inv.setChestplate(chestplate);
+			inv.setLeggings(leggings);
+			inv.setBoots(boots);
+			ItemStack snowball = new ItemStack(Material.SNOW_BALL, 1);
+			ItemMeta snowMeta = snowball.getItemMeta();
+			snowMeta.setDisplayName("Catapult");
+			snowball.setItemMeta(snowMeta);
+			inv.addItem(snowball);
+			break;
+		case SUNFLOWER:
+			@SuppressWarnings("deprecation")
+			ItemStack sunflower = new ItemStack(Material.getMaterial(175));
+			ItemMeta sunMeta = sunflower.getItemMeta();
+			sunMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&',
+					"&2Click to boost."));
+			sunflower.setItemMeta(sunMeta);
+			inv.setChestplate(new ItemStack(Material.GOLD_CHESTPLATE, 3));
+			inv.setLeggings(new ItemStack(Material.GOLD_LEGGINGS, 3));
+			inv.setBoots(new ItemStack(Material.GOLD_BOOTS, 3));
+			inv.addItem(sunflower);
+			break;
 		}
 		TempRow row = Main.gameManager.calculateRow(game, true);
-		player.teleport(Selection.locationFromString(row.getPlantSpawn()));
-		row.getPlants().add(player.getUniqueId());
+		if (row == null) {
+			Messages.sendMessage(player, Messages.getMessage("no rows created"));
+			return;
+		}
+		try {
+			player.teleport(Selection.locationFromString(row.getPlantSpawn()));
+			row.getPlants().add(player.getUniqueId());
+		} catch (NullPointerException e) {
+			Messages.sendMessage(player, Messages.getMessage("no spawn set"));
+		}
 		if (Main.gameManager.deathCountdowns.contains(player.getUniqueId()))
 			Main.gameManager.deathCountdowns.remove(player.getUniqueId());
 	}
@@ -217,14 +253,22 @@ public class InventoryManager {
 			inv.setLeggings(new ItemStack(Material.IRON_LEGGINGS, 1));
 			inv.setBoots(new ItemStack(Material.IRON_BOOTS, 1));
 			player.addPotionEffect(new PotionEffect(
-					PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 2));
+					PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,
 					Integer.MAX_VALUE, 4));
 			break;
 		}
 		TempRow row = Main.gameManager.calculateRow(game, false);
-		player.teleport(Selection.locationFromString(row.getZombieSpawn()));
-		row.getZombies().add(player.getUniqueId());
+		if (row == null) {
+			Messages.sendMessage(player, Messages.getMessage("no rows created"));
+			return;
+		}
+		try {
+			player.teleport(Selection.locationFromString(row.getZombieSpawn()));
+			row.getZombies().add(player.getUniqueId());
+		} catch (NullPointerException e) {
+			Messages.sendMessage(player, Messages.getMessage("no spawn set"));
+		}
 		if (Main.gameManager.deathCountdowns.contains(player.getUniqueId()))
 			Main.gameManager.deathCountdowns.remove(player.getUniqueId());
 	}

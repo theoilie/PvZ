@@ -23,6 +23,10 @@ public class Messages {
 				+ message));
 	}
 
+	public static void sendMessageNoPrefix(Player player, String message) {
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+	}
+
 	public static String stripColors(String msg) {
 		String out = msg.replaceAll("[&][0-9a-f]", "");
 		out = out.replaceAll(String.valueOf((char) 194), "");
@@ -32,6 +36,7 @@ public class Messages {
 	public static String getMessage(String message) {
 		return Main.fileUtils.getMessages().getString(message);
 	}
+
 	public static void setPrefix(String newPrefix) {
 		prefix = newPrefix;
 	}

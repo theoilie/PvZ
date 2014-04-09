@@ -4,6 +4,14 @@ round length: 120
 time until start: 15
 players until start: 3
 plant to zombie ratio: '1:2'
+stats:
+  use MySQL: false
+  MySQL:
+    host: 'hostname'
+    port: 3306
+    database: 'database'
+    user: 'username'
+    pass: 'password'
 inventory:
   size: 27
   name: '&2P&ev&7Z&f &5Game Selection'
@@ -43,6 +51,41 @@ type inventory:
       permission: 'pvz.repeater'
       desc:
       - 'Shoot two snowballs at once!'
+    bonk choy sword:
+      slot: 3
+      item id: 276
+      item amount: 1
+      name: '&2Bonk Choy'
+      zombie type: 'none'
+      plant type: 'bonk choy'
+      permission: 'pvz.bonkchoy'
+      desc:
+      - 'Bonk Choy is very powerful, but has a low '
+      - 'attack radius. Be careful with it!'
+    winter melon ice block:
+      slot: 4
+      item id: 174
+      item amount: 1
+      name: '&2Winter Melon'
+      zombie type: 'none'
+      plant type: 'winter melon'
+      permission: 'pvz.wintermelon'
+      desc:
+      - 'Winter Melon attacks with powerful long range'
+      - 'snowballs that temporarily freeze zombies!'
+    sunflower sunflower:
+      slot: 5
+      item id: 175
+      item amount: 1
+      name: '&2Sunflower'
+      zombie type: 'none'
+      plant type: 'sunflower'
+      permission: 'pvz.sunflower'
+      desc:
+      - 'The Sunflower plant boosts its teammates with'
+      - 'strength, speed, or regeneration, plus a random'
+      - 'sword for himself!'
+
     basic helmet:
       slot: 19
       item id: 298

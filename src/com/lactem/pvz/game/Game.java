@@ -2,6 +2,7 @@ package com.lactem.pvz.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -27,6 +28,8 @@ public class Game {
 	private ZombieTeam zombies = new ZombieTeam();
 	private Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 	private ArrayList<TempRow> rows = new ArrayList<TempRow>();
+	private ArrayList<UUID> frozen = new ArrayList<UUID>();
+	private ArrayList<UUID> inCooldown = new ArrayList<UUID>();
 
 	public Game(int slot, GameState state, ItemStack item, List<String> list,
 			String farm, int maxPlayers) {
@@ -132,5 +135,21 @@ public class Game {
 
 	public void setBoard(Scoreboard board) {
 		this.board = board;
+	}
+
+	public ArrayList<UUID> getFrozen() {
+		return frozen;
+	}
+
+	public void setFrozen(ArrayList<UUID> frozen) {
+		this.frozen = frozen;
+	}
+
+	public ArrayList<UUID> getInCooldown() {
+		return inCooldown;
+	}
+
+	public void setInCooldown(ArrayList<UUID> inCooldown) {
+		this.inCooldown = inCooldown;
 	}
 }

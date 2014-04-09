@@ -27,28 +27,40 @@ public class FileUtils {
 
 	FileConfiguration config;
 	FileConfiguration messages;
+	FileConfiguration stats;
 	File messagesFile;
 	File configFile;
+	File statsFile;
 
 	public void setup(Plugin plugin) {
 		this.plugin = plugin;
 		if (!plugin.getDataFolder().exists()) {
 			plugin.getDataFolder().mkdir();
 		}
+		// Config setup
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		if (!configFile.exists()) {
 			copyFileFromJar("config.yml");
 		}
 		config = YamlConfiguration.loadConfiguration(configFile);
 		saveConfig();
+		// Messages setup
 		messagesFile = new File(plugin.getDataFolder(), "messages.yml");
 		if (!messagesFile.exists()) {
 			copyFileFromJar("messages.yml");
 		}
 		messages = YamlConfiguration.loadConfiguration(messagesFile);
 		saveMessages();
+		// Stats setup
+		statsFile = new File(plugin.getDataFolder(), "stats.yml");
+		if (!statsFile.exists()) {
+			copyFileFromJar("stats.yml");
+		}
+		stats = YamlConfiguration.loadConfiguration(statsFile);
+		saveStats();
 	}
 
+	// Config
 	public FileConfiguration getConfig() {
 		return config;
 	}
@@ -67,7 +79,10 @@ public class FileUtils {
 	public void reloadConfig() {
 		config = YamlConfiguration.loadConfiguration(configFile);
 	}
-	
+
+	// End config
+
+	// Messages
 	public FileConfiguration getMessages() {
 		return messages;
 	}
@@ -85,6 +100,28 @@ public class FileUtils {
 
 	public void reloadMessages() {
 		messages = YamlConfiguration.loadConfiguration(messagesFile);
+	}
+
+	// End messages
+
+	// Stats
+	public FileConfiguration getStats() {
+		return stats;
+	}
+
+	public void saveStats() {
+		try {
+			stats.save(statsFile);
+		} catch (IOException e) {
+			Bukkit.getServer()
+					.getLogger()
+					.severe(ChatColor.RED
+							+ "The file stats.yml couldn't be saved!");
+		}
+	}
+
+	public void reloadStats() {
+		stats = YamlConfiguration.loadConfiguration(statsFile);
 	}
 
 	public void copyFileFromJar(String fileName) {
