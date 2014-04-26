@@ -16,6 +16,8 @@ public class LeaveCommand implements BasePvZCommand {
 		}
 		Main.teamManager.removePlant(player);
 		Main.teamManager.removeZombie(player);
+		if (Main.gameManager.deathCountdowns.contains(player.getUniqueId()))
+			Main.gameManager.deathCountdowns.remove(player.getUniqueId());
 		Messages.sendMessage(player, Messages.getMessage("left"));
 	}
 }

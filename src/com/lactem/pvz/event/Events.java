@@ -335,6 +335,8 @@ public class Events implements Listener {
 			if (projectile.getShooter() instanceof Player) {
 				Player player = (Player) projectile.getShooter();
 				Game game = Main.gameManager.getGame(player);
+				if (game == null)
+					return;
 				if (game.getState() != GameState.PLAYING)
 					return;
 				PlantType type = game.getPlants().getMembers()

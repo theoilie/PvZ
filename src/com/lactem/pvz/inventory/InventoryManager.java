@@ -39,12 +39,38 @@ public class InventoryManager {
 	public HashMap<Integer, PlantType> itemsWithPlantTypes = new HashMap<Integer, PlantType>();
 	public HashMap<Integer, ZombieType> itemsWithZombieTypes = new HashMap<Integer, ZombieType>();
 
-	public void updateInventory() {
+	public void updateInventories() {
+		updateJoinInventory();
+		updateTypeInventory();
+	}
+
+	private void updateJoinInventory() {
+		createJoinInventory();
+		setJoinItems();
+	}
+
+	private void updateTypeInventory() {
+		createTypeInventory();
+		setTypeItems();
+	}
+
+	private void createJoinInventory() {
 		int size = Main.fileUtils.getConfig().getInt("inventory.size");
 		String name = ChatColor.translateAlternateColorCodes('&',
 				Main.fileUtils.getConfig().getString("inventory.name"));
 		gameInv = Bukkit.getServer().createInventory(null,
 				size % 9 == 0 ? size : 27, name);
+	}
+
+	private void createTypeInventory() {
+		int size = Main.fileUtils.getConfig().getInt("type inventory.size");
+		String name = ChatColor.translateAlternateColorCodes('&',
+				Main.fileUtils.getConfig().getString("type inventory.name"));
+		typeInv = Bukkit.getServer().createInventory(null,
+				size % 9 == 0 ? size : 27, name);
+	}
+
+	private void setJoinItems() {
 		ConfigurationSection cs = Main.fileUtils.getConfig()
 				.getConfigurationSection("inventory.items");
 		for (String s : cs.getKeys(false)) {
@@ -53,17 +79,11 @@ public class InventoryManager {
 		}
 	}
 
-	public void updateTypeInventory() {
-		int size = Main.fileUtils.getConfig().getInt("type inventory.size");
-		String name = ChatColor.translateAlternateColorCodes('&',
-				Main.fileUtils.getConfig().getString("type inventory.name"));
-		typeInv = Bukkit.getServer().createInventory(null,
-				size % 9 == 0 ? size : 27, name);
+	private void setTypeItems() {
 		ConfigurationSection cs = Main.fileUtils.getConfig()
 				.getConfigurationSection("type inventory.items");
 		for (String s : cs.getKeys(false)) {
-			ConfigurationSection itemSection = cs.getConfigurationSection(s);
-			addTypeItem(itemSection);
+			addTypeItem(cs.getConfigurationSection(s));
 		}
 	}
 
@@ -72,8 +92,7 @@ public class InventoryManager {
 		ConfigurationSection cs = Main.fileUtils.getConfig()
 				.getConfigurationSection("inventory.items");
 		for (String s : cs.getKeys(false)) {
-			ConfigurationSection itemSection = cs.getConfigurationSection(s);
-			gameItems.add(createItem(itemSection));
+			gameItems.add(createItem(cs.getConfigurationSection(s)));
 		}
 		return gameItems;
 	}
@@ -128,27 +147,30 @@ public class InventoryManager {
 		ItemMeta meta = item.getItemMeta();
 		ArrayList<String> newList = new ArrayList<String>();
 		for (int i = 0; i < list.size(); i++) {
-			String line = list.get(i);
-			newList.add(line);
-			String newLine = newList.get(i);
-			if (game.getFarm() == null)
-				newLine = newLine.replaceAll("<map>", "ERROR: NO MAP FOUND");
-			else
-				newLine = newLine.replaceAll("<map>", game.getFarm().getName());
-			newLine = newLine.replaceAll("<currentplayers>",
-					(game.getZombies().getMembers().size() + game.getPlants()
-							.getMembers().size())
-							+ "");
-			newLine = newLine.replaceAll("<maxplayers>", game.getMaxPlayers()
-					+ "");
-			newLine = newLine
-					.replaceAll("<status>", game.getState().toString());
-			newList.set(i, ChatColor.translateAlternateColorCodes('&', newLine));
+			newList = addLine(i, list, newList, game);
 		}
 		meta.setLore(newList);
 		item.setItemMeta(meta);
 		game.setItemStack(item);
 		gameInv.setItem(game.getSlot(), item);
+	}
+
+	public ArrayList<String> addLine(int i, List<String> list,
+			ArrayList<String> newList, Game game) {
+		String line = list.get(i);
+		newList.add(line);
+		String newLine = newList.get(i);
+		if (game.getFarm() == null)
+			newLine = newLine.replaceAll("<map>", "ERROR: NO MAP FOUND");
+		else
+			newLine = newLine.replaceAll("<map>", game.getFarm().getName());
+		newLine = newLine.replaceAll("<currentplayers>", (game.getZombies()
+				.getMembers().size() + game.getPlants().getMembers().size())
+				+ "");
+		newLine = newLine.replaceAll("<maxplayers>", game.getMaxPlayers() + "");
+		newLine = newLine.replaceAll("<status>", game.getState().toString());
+		newList.set(i, ChatColor.translateAlternateColorCodes('&', newLine));
+		return newList;
 	}
 
 	public void givePlantInventory(Player player, PlantType type, Game game) {
@@ -215,19 +237,7 @@ public class InventoryManager {
 			inv.addItem(sunflower);
 			break;
 		}
-		TempRow row = Main.gameManager.calculateRow(game, true);
-		if (row == null) {
-			Messages.sendMessage(player, Messages.getMessage("no rows created"));
-			return;
-		}
-		try {
-			player.teleport(Selection.locationFromString(row.getPlantSpawn()));
-			row.getPlants().add(player.getUniqueId());
-		} catch (NullPointerException e) {
-			Messages.sendMessage(player, Messages.getMessage("no spawn set"));
-		}
-		if (Main.gameManager.deathCountdowns.contains(player.getUniqueId()))
-			Main.gameManager.deathCountdowns.remove(player.getUniqueId());
+		findRow(player, game, true);
 	}
 
 	public void giveZombieInventory(Player player, ZombieType type, Game game) {
@@ -258,14 +268,18 @@ public class InventoryManager {
 					Integer.MAX_VALUE, 4));
 			break;
 		}
-		TempRow row = Main.gameManager.calculateRow(game, false);
+		findRow(player, game, false);
+	}
+
+	private void findRow(Player player, Game game, boolean plant) {
+		TempRow row = Main.gameManager.calculateRow(game, plant);
 		if (row == null) {
 			Messages.sendMessage(player, Messages.getMessage("no rows created"));
 			return;
 		}
 		try {
-			player.teleport(Selection.locationFromString(row.getZombieSpawn()));
-			row.getZombies().add(player.getUniqueId());
+			player.teleport(Selection.locationFromString(row.getPlantSpawn()));
+			row.getPlants().add(player.getUniqueId());
 		} catch (NullPointerException e) {
 			Messages.sendMessage(player, Messages.getMessage("no spawn set"));
 		}

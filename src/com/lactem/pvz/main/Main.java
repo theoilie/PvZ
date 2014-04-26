@@ -58,8 +58,7 @@ public class Main extends JavaPlugin {
 		Selection.setUniversalWandId(fileUtils.getConfig().getInt("wand id"));
 		Selection.setPermission("pvz.wand");
 		getServer().getPluginManager().registerEvents(new Events(), this);
-		invManager.updateInventory();
-		invManager.updateTypeInventory();
+		invManager.updateInventories();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,

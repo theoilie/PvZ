@@ -49,7 +49,7 @@ public class Selection implements Serializable {
 
 	public boolean areBlocksInDifferentWorlds() {
 		return getBlock1().getWorld().getName()
-				.equals(getBlock2().getWorld().getName()) ? false : true;
+				.equals(getBlock2().getWorld().getName());
 	}
 
 	public static String getPermission() {
