@@ -293,8 +293,16 @@ public class InventoryManager {
 			return;
 		}
 		try {
-			player.teleport(Selection.locationFromString(row.getPlantSpawn()));
-			row.getPlants().add(player.getUniqueId());
+			if (plant) {
+				player.teleport(Selection.locationFromString(row
+						.getPlantSpawn()));
+				row.getPlants().add(player.getUniqueId());
+			} else {
+				player.teleport(Selection.locationFromString(row
+						.getZombieSpawn()));
+				row.getZombies().add(player.getUniqueId());
+			}
+
 		} catch (NullPointerException e) {
 			Messages.sendMessage(player, Messages.getMessage("no spawn set"));
 		}
