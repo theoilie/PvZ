@@ -77,6 +77,13 @@ public class SQLUtils {
 			return statsManager.getGamesPlayed(player);
 	}
 
+	public int getSun(String player, boolean sql) {
+		if (sql)
+			return get(player, "sun");
+		else
+			return statsManager.getSun(player);
+	}
+
 	public void setKills(String player, int kills, boolean sql) {
 		if (sql)
 			set(player, "kills", kills);
@@ -103,6 +110,13 @@ public class SQLUtils {
 			set(player, "games_played", gamesPlayed);
 		else
 			statsManager.setGamesPlayed(player, gamesPlayed);
+	}
+
+	public void setSun(String player, int sun, boolean sql) {
+		if (sql)
+			set(player, "sun", sun);
+		else
+			statsManager.setSun(player, sun);
 	}
 
 	public boolean resetStats(String player, boolean sql) {
@@ -168,6 +182,7 @@ public class SQLUtils {
 					int deaths = rs.getInt(3);
 					int gamesPlayed = rs.getInt(4);
 					int rowsCaptured = rs.getInt(5);
+					int sun = rs.getInt(6);
 					if (name.equals(player.toLowerCase())) {
 						if (query.equals("kills"))
 							stat = kills;
@@ -177,6 +192,8 @@ public class SQLUtils {
 							stat = gamesPlayed;
 						else if (query.equals("rows_captured"))
 							stat = rowsCaptured;
+						else if (query.equals("sun"))
+							stat = sun;
 					}
 				}
 			}
@@ -203,7 +220,7 @@ public class SQLUtils {
 				openConnection();
 			statement = connection.createStatement();
 			statement
-					.executeUpdate("CREATE TABLE IF NOT EXISTS PvZPlayerStats (PlayerName varchar(200), kills int, deaths int, games_played int, rows_captured int)");
+					.executeUpdate("CREATE TABLE IF NOT EXISTS PvZPlayerStats (PlayerName varchar(200), kills int, deaths int, games_played int, rows_captured int, sun int)");
 			makeNewPlayer(player);
 			preparedStatement = connection
 					.prepareStatement("UPDATE PvZPlayerStats SET " + stat
@@ -234,14 +251,14 @@ public class SQLUtils {
 				openConnection();
 			statement = connection.createStatement();
 			statement
-					.executeUpdate("CREATE TABLE IF NOT EXISTS PvZPlayerStats (PlayerName varchar(200), kills int, deaths int, games_played int, rows_captured int)");
+					.executeUpdate("CREATE TABLE IF NOT EXISTS PvZPlayerStats (PlayerName varchar(200), kills int, deaths int, games_played int, rows_captured int, sun int)");
 			rs = statement
 					.executeQuery("SELECT * FROM PvZPlayerStats WHERE PlayerName = '"
 							+ player.toLowerCase() + "' LIMIT 1");
 			if (!rs.next()) {
 				statement
-						.execute("INSERT INTO PvZPlayerStats (PlayerName, kills, deaths, games_played, rows_captured) VALUES ('"
-								+ player.toLowerCase() + "', 0, 0, 0, 0)");
+						.execute("INSERT INTO PvZPlayerStats (PlayerName, kills, deaths, games_played, rows_captured, sun) VALUES ('"
+								+ player.toLowerCase() + "', 0, 0, 0, 0, 0)");
 			}
 		} catch (SQLException e) {
 			Bukkit.getLogger().log(Level.SEVERE,

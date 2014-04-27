@@ -194,6 +194,11 @@ public class GameManager {
 									player.getName(),
 									Main.sqlUtils.getGamesPlayed(
 											player.getName(), sql) + 1, sql);
+					Main.sqlUtils.setSun(
+							player.getName(),
+							Main.sqlUtils.getSun(player.getName(), sql)
+									+ Main.fileUtils.getConfig().getInt(
+											"sun per game"), sql);
 				}
 			}
 		}
@@ -210,6 +215,11 @@ public class GameManager {
 									player.getName(),
 									Main.sqlUtils.getGamesPlayed(
 											player.getName(), sql) + 1, sql);
+					Main.sqlUtils.setSun(
+							player.getName(),
+							Main.sqlUtils.getSun(player.getName(), sql)
+									+ Main.fileUtils.getConfig().getInt(
+											"sun per game"), sql);
 				}
 			}
 		}

@@ -21,6 +21,10 @@ public class StatsManager {
 	public int getGamesPlayed(String player) {
 		return get(player, "games_played");
 	}
+	
+	public int getSun(String player) {
+		return get(player, "sun");
+	}
 
 	public void setKills(String player, int kills) {
 		set(player, "kills", kills);
@@ -36,6 +40,10 @@ public class StatsManager {
 
 	public void setGamesPlayed(String player, int gamesPlayed) {
 		set(player, "games_played", gamesPlayed);
+	}
+	
+	public void setSun(String player, int sun) {
+		set(player, "sun", sun);
 	}
 
 	public boolean reset(String player) {

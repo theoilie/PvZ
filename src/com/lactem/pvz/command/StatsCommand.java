@@ -38,5 +38,7 @@ public class StatsCommand implements BasePvZCommand {
 				"Games played: &4" + Main.sqlUtils.getGamesPlayed(name, sql));
 		Messages.sendMessage(player,
 				"Rows captured: &4" + Main.sqlUtils.getRowsCaptured(name, sql));
+		Messages.sendMessage(player,
+				"Sun: &4" + Main.sqlUtils.getSun(name, sql));
 	}
 }

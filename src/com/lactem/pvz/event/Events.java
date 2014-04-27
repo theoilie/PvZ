@@ -291,10 +291,20 @@ public class Events implements Listener {
 			boolean sql = Main.sqlUtils.isUsingMySQL();
 			Main.sqlUtils.setDeaths(player.getName(),
 					Main.sqlUtils.getDeaths(player.getName(), sql) + 1, sql);
+			Main.sqlUtils.setSun(
+					player.getName(),
+					Main.sqlUtils.getSun(player.getName(), sql)
+							- Main.fileUtils.getConfig().getInt(
+									"sun loss per death"), sql);
 			if (player.getKiller() instanceof Player) {
 				Player killer = player.getKiller();
 				Main.sqlUtils.setKills(killer.getName(),
 						Main.sqlUtils.getKills(killer.getName(), sql) + 1, sql);
+				Main.sqlUtils.setSun(
+						killer.getName(),
+						Main.sqlUtils.getSun(killer.getName(), sql)
+								+ Main.fileUtils.getConfig().getInt(
+										"sun per kill"), sql);
 			}
 		}
 	}
@@ -327,6 +337,7 @@ public class Events implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	private void onProjectileHitEvent(final ProjectileHitEvent event) {
 		Projectile projectile = event.getEntity();
@@ -412,6 +423,7 @@ public class Events implements Listener {
 			Main.sqlUtils.makeNewPlayer(event.getPlayer().getName());
 	}
 
+	@SuppressWarnings("deprecation")
 	private void checkCancel(final EntityDamageByEntityEvent event,
 			final Player player, Player damager, Projectile projectile) {
 		if (damager == null)
@@ -433,6 +445,7 @@ public class Events implements Listener {
 			event.setCancelled(true);
 	}
 
+	@SuppressWarnings("deprecation")
 	private void snowball(final Player player) {
 		Snowball snowball = player.launchProjectile(Snowball.class);
 		snowball.setVelocity(snowball.getVelocity().multiply(2));
