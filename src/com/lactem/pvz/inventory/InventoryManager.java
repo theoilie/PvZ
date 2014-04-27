@@ -272,9 +272,9 @@ public class InventoryManager {
 					PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,
 					Integer.MAX_VALUE, 4));
-			// if (Main.dc != null)
-			// disguise = new Disguise(Main.dc.newEntityID(),
-			// DisguiseType.Giant);
+			if (Main.dc != null)
+				disguise = new Disguise(Main.dc.newEntityID(),
+						DisguiseType.Giant);
 			break;
 		}
 		findRow(player, game, false);
