@@ -5,6 +5,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import pgDev.bukkit.DisguiseCraft.DisguiseCraft;
+import pgDev.bukkit.DisguiseCraft.api.DisguiseCraftAPI;
+
 import com.lactem.pvz.command.AddCommand;
 import com.lactem.pvz.command.CheckCommand;
 import com.lactem.pvz.command.CreateCommand;
@@ -36,6 +39,7 @@ public class Main extends JavaPlugin {
 	public static final FarmManager farmManager = new FarmManager();
 	public static final SQLUtils sqlUtils = new SQLUtils();
 	public static final Validate validate = new Validate();
+	public static DisguiseCraftAPI dc = null;
 	private WandCommand wand = new WandCommand();
 	CreateCommand create = new CreateCommand();
 	AddCommand add = new AddCommand();
@@ -57,6 +61,8 @@ public class Main extends JavaPlugin {
 		Messages.setPrefix(fileUtils.getConfig().getString("prefix"));
 		Selection.setUniversalWandId(fileUtils.getConfig().getInt("wand id"));
 		Selection.setPermission("pvz.wand");
+		if (fileUtils.getConfig().getBoolean("use disguisecraft"))
+			dc = DisguiseCraft.getAPI();
 		getServer().getPluginManager().registerEvents(new Events(), this);
 		invManager.updateInventories();
 	}

@@ -98,6 +98,10 @@ public class TeamManager {
 			game.getZombies().getMembers().remove(player.getUniqueId());
 			Main.invManager.removeInventory(player);
 		}
+		if (Main.dc == null)
+			return;
+		if (Main.dc.isDisguised(player))
+			Main.dc.undisguisePlayer(player);
 	}
 
 	public boolean isPlayerInGame(Player player) {

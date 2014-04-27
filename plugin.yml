@@ -1,7 +1,8 @@
 name: PvZ
 main: com.lactem.pvz.main.Main
-version: 2.0
+version: 2.5
 author: Lactem
+softdepend: [DisguiseCraft]
 description: Play Plants Versus Zombies in minecraft!
 commands:
   pvz:

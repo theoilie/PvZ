@@ -42,8 +42,7 @@ public class Validate {
 
 	public boolean hasSelection(Player player) {
 		if (Selection.getPlayerSelection(player).areBothPointsSet()
-				&& !Selection.getPlayerSelection(player)
-						.areBlocksInDifferentWorlds())
+				&& Selection.getPlayerSelection(player).areBlocksInSameWorld())
 			return true;
 		else {
 			Messages.sendMessage(player,

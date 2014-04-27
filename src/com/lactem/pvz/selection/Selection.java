@@ -47,7 +47,7 @@ public class Selection implements Serializable {
 		return getBlock1() == null || getBlock2() == null ? false : true;
 	}
 
-	public boolean areBlocksInDifferentWorlds() {
+	public boolean areBlocksInSameWorld() {
 		return getBlock1().getWorld().getName()
 				.equals(getBlock2().getWorld().getName());
 	}

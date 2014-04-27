@@ -4,6 +4,7 @@ round length: 120
 time until start: 15
 players until start: 3
 plant to zombie ratio: '1:2'
+use disguisecraft: false
 stats:
   use MySQL: false
   MySQL:

@@ -21,6 +21,9 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import pgDev.bukkit.DisguiseCraft.disguise.Disguise;
+import pgDev.bukkit.DisguiseCraft.disguise.DisguiseType;
+
 import com.lactem.pvz.game.Game;
 import com.lactem.pvz.game.GameState;
 import com.lactem.pvz.main.Main;
@@ -243,6 +246,9 @@ public class InventoryManager {
 	public void giveZombieInventory(Player player, ZombieType type, Game game) {
 		PlayerInventory inv = player.getInventory();
 		removeInventory(player);
+		Disguise disguise = null;
+		if (Main.dc != null)
+			disguise = new Disguise(Main.dc.newEntityID(), DisguiseType.Zombie);
 		switch (type) {
 		case BASIC:
 			inv.addItem(new ItemStack(Material.WOOD_SWORD, 1));
@@ -266,9 +272,18 @@ public class InventoryManager {
 					PotionEffectType.ABSORPTION, Integer.MAX_VALUE, 1));
 			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,
 					Integer.MAX_VALUE, 4));
+			// if (Main.dc != null)
+			// disguise = new Disguise(Main.dc.newEntityID(),
+			// DisguiseType.Giant);
 			break;
 		}
 		findRow(player, game, false);
+		if (Main.dc != null) {
+			if (Main.dc.isDisguised(player))
+				Main.dc.disguisePlayer(player, disguise);
+			else
+				Main.dc.changePlayerDisguise(player, disguise);
+		}
 	}
 
 	private void findRow(Player player, Game game, boolean plant) {
@@ -299,6 +314,10 @@ public class InventoryManager {
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			p.showPlayer(player);
 		}
+		if (Main.dc == null)
+			return;
+		if (Main.dc.isDisguised(player))
+			Main.dc.undisguisePlayer(player);
 	}
 
 	public void giveSpectatingInventory(final Player player,

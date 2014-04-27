@@ -327,7 +327,6 @@ public class Events implements Listener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	private void onProjectileHitEvent(final ProjectileHitEvent event) {
 		Projectile projectile = event.getEntity();
@@ -413,7 +412,6 @@ public class Events implements Listener {
 			Main.sqlUtils.makeNewPlayer(event.getPlayer().getName());
 	}
 
-	@SuppressWarnings("deprecation")
 	private void checkCancel(final EntityDamageByEntityEvent event,
 			final Player player, Player damager, Projectile projectile) {
 		if (damager == null)
@@ -435,7 +433,6 @@ public class Events implements Listener {
 			event.setCancelled(true);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void snowball(final Player player) {
 		Snowball snowball = player.launchProjectile(Snowball.class);
 		snowball.setVelocity(snowball.getVelocity().multiply(2));
