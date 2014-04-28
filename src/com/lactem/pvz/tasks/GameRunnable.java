@@ -24,27 +24,25 @@ public class GameRunnable implements Runnable {
 			Objective objective = game.getBoard().getObjective(
 					DisplaySlot.SIDEBAR);
 			game.getBoard().resetScores(
-					Bukkit.getOfflinePlayer((game.getTimeLeft() + 1)
-							+ " seconds"));
+					(game.getTimeLeft() + 1)
+							+ " seconds");
 			int num = 0;
 			for (int i = 0; i < game.getRows().size(); i++) {
 				if (!game.getRows().get(i).isEndpointTaken())
 					num++;
 			}
 			game.getBoard()
-					.resetScores(Bukkit.getOfflinePlayer("" + (num + 1)));
-			Score time = objective.getScore(Bukkit.getOfflinePlayer(ChatColor
-					.translateAlternateColorCodes('&', "&lTime Remaining")));
+					.resetScores("" + (num + 1));
+			Score time = objective.getScore(ChatColor
+					.translateAlternateColorCodes('&', "&lTime Remaining"));
 			time.setScore(4);
-			Score intTime = objective.getScore(Bukkit.getOfflinePlayer(game
-					.getTimeLeft() + " seconds"));
+			Score intTime = objective.getScore(game
+					.getTimeLeft() + " seconds");
 			intTime.setScore(3);
-			Score endpoints = objective.getScore(Bukkit
-					.getOfflinePlayer(ChatColor.translateAlternateColorCodes(
-							'&', "&lRows Remaining")));
+			Score endpoints = objective.getScore(ChatColor.translateAlternateColorCodes(
+							'&', "&lRows Remaining"));
 			endpoints.setScore(2);
-			Score numEnds = objective.getScore(Bukkit
-					.getOfflinePlayer("" + num));
+			Score numEnds = objective.getScore("" + num);
 			numEnds.setScore(1);
 		} catch (NullPointerException e) {
 		}
