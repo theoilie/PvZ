@@ -1,6 +1,5 @@
 package com.lactem.pvz.selection;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -9,9 +8,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-public class Selection implements Serializable {
-
-	private static final long serialVersionUID = -1655621435227518958L;
+public class Selection {
 	private Block block1;
 	private Block block2;
 	private Player player;
