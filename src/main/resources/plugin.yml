@@ -1,0 +1,10 @@
+name: PvZ
+main: me.lactem.pvz.Main
+version: 2.5
+author: Lactem
+softdepend: [DisguiseCraft]
+description: Play Plants Versus Zombies in minecraft!
+commands:
+  pvz:
+    description: /pvz help
+    usage: /pvz

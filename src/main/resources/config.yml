@@ -1,0 +1,18 @@
+prefix: '&f[&2P&ev&7Z&f] '
+wand id: 2262
+round length: 120
+time until start: 15
+players until start: 3
+plant to zombie ratio: '1:2'
+sun per game: 10
+sun per kill: 3
+sun loss per death: 0
+use disguisecraft: false
+stats:
+  use MySQL: false
+  MySQL:
+    host: 'hostname'
+    port: 3306
+    database: 'database'
+    user: 'username'
+    pass: 'password'
