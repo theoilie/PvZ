@@ -1,0 +1,94 @@
+# This file stores all of the information for the type inventory, which can be accessed
+# by typing /pvz type.
+size: 27
+name: '&2P&ev&7Z&f &5Type Selection'
+items:
+  peashooter slimeball:
+    slot: 1
+    item id: 341
+    item amount: 1
+    name: '&2Peashooter'
+    zombie type: 'none'
+    plant type: 'peashooter'
+    permission: 'none'
+    desc:
+    - 'The Peashooter can shoot one snowball at a time.'
+  repeater slimeball:
+    slot: 2
+    item id: 341
+    item amount: 2
+    name: '&2Repeater'
+    zombie type: 'none'
+    plant type: 'repeater'
+    permission: 'pvz.repeater'
+    desc:
+    - 'Shoot two snowballs at once!'
+  bonk choy sword:
+    slot: 3
+    item id: 276
+    item amount: 1
+    name: '&2Bonk Choy'
+    zombie type: 'none'
+    plant type: 'bonk choy'
+    permission: 'pvz.bonkchoy'
+    desc:
+    - 'Bonk Choy is very powerful, but has a low '
+    - 'attack radius. Be careful with it!'
+  winter melon ice block:
+    slot: 4
+    item id: 174
+    item amount: 1
+    name: '&2Winter Melon'
+    zombie type: 'none'
+    plant type: 'winter melon'
+    permission: 'pvz.wintermelon'
+    desc:
+    - 'Winter Melon attacks with powerful long range'
+    - 'snowballs that temporarily freeze zombies!'
+  sunflower sunflower:
+    slot: 5
+    item id: 175
+    item amount: 1
+    name: '&2Sunflower'
+    zombie type: 'none'
+    plant type: 'sunflower'
+    permission: 'pvz.sunflower'
+    desc:
+    - 'The Sunflower plant boosts its teammates with'
+    - 'strength, speed, or regeneration, plus a random'
+    - 'sword for himself!'
+
+  basic helmet:
+    slot: 19
+    item id: 298
+    item amount: 1
+    name: '&4Basic Zombie'
+    zombie type: 'basic'
+    plant type: 'none'
+    permission: 'none'
+    desc:
+    - 'Just a plain old zombie - you'
+    - 'get a leather cap and wooden sword.'
+  conehead helmet:
+    slot: 20
+    item id: 302
+    item amount: 1
+    name: '&4Conehead Zombie'
+    zombie type: 'conehead'
+    plant type: 'none'
+    permission: 'pvz.conehead'
+    desc:
+    - 'Conehead Zombie gets a better sword'
+    - 'and better armor than Basic Zombie.'
+  gargantuar sword:
+    slot: 21
+    item id: 267
+    item amount: 1
+    name: '&4Gargantuar Zombie'
+    zombie type: 'gargantuar'
+    plant type: 'none'
+    permission: 'pvz.gargantuar'
+    desc:
+    - 'With full iron armor, an iron'
+    - 'sword, and 4 extra hearts, Gargantuar'
+    - 'is possibly the strongest zombie.'

@@ -2,13 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>PvZ</groupId>
+  <groupId>Lactem</groupId>
   <artifactId>PvZ</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>PvZ</name>
-  <url>http://maven.apache.org</url>
+  <version>3.0</version>
+  <description>Plants Versus Zombies is a minecraft mini-game inspired by the popular Android/iOS game.</description>
+  <url>http://dev.bukkit.org/bukkit-plugins/plants-vs-zombies/</url>
 
   <dependencies>
     <dependency>
@@ -31,4 +32,41 @@
       <url>http://build.yu8.me:8080/plugin/repository/everything/</url>
     </repository> 
   </repositories>
+  
+  <build>
+    <resources>
+        <resource>
+            <targetPath>.</targetPath>
+            <directory>${basedir}/src/main/resources/</directory>
+            <filtering>true</filtering>
+            <includes>
+                <include>config.yml</include>
+                <include>messages.yml</include>
+                <include>plugin.yml</include>
+                <include>stats.yml</include>
+                <include>join inventory.yml</include>
+                <include>type inventory.yml</include>
+            </includes>
+        </resource>
+        <resource>
+            <targetPath>.</targetPath>
+            <directory>${basedir}/</directory>
+            <filtering>false</filtering>
+            <includes>
+              <include>README.md</include>
+            </includes>
+        </resource>
+    </resources>
+        
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>2.3.2</version>
+            <configuration>
+                <showDeprecation>true</showDeprecation>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
 </project>
