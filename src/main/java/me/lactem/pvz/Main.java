@@ -22,6 +22,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Plants Versus Zombies for minecraft - main class!
+ * @author Lactem
+ */
 public class Main extends JavaPlugin {
 	private static API api;
 	
