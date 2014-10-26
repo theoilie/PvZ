@@ -1,0 +1,42 @@
+# The prefix of all messages being sent.
+prefix: '&f[&2P&ev&7Z&f] '
+
+# The id of the item to be used as a selection wand. Defaults to a music disc (2262).
+wand id: 2262
+
+# If debugging is enabled, stack traces will be printed when errors occur.
+enable debugging: false
+
+# The length of rounds in seconds.
+round length: 120
+
+# The countdown length for after enough players join the game.
+time until start: 15
+
+# The minimum amount of players needed to start a game.
+players until start: 3
+
+# The ratio of plants to zombies. Defaults to 1 plant to 2 zombies.
+plant to zombie ratio: '1:2'
+
+# The amount of sun awarded after a game ends.
+sun per game: 10
+
+# The amount of sun awarded for killing a player disguised as a plant or zombie (excludes mobs).
+sun per kill: 3
+
+# The amount of sun subtracted for dying.
+sun loss per death: 0
+
+# Whether or not to use DisguiseCraft. It must be in the plugins folder if set to true.
+use disguisecraft: false
+
+# Information for MySQL. Set use mySQL to false to just use local file storage instead.
+stats:
+  use MySQL: false
+  MySQL:
+    host: 'hostname'
+    port: 3306
+    database: 'database'
+    user: 'username'
+    pass: 'password'

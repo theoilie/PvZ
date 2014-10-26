@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>Lactem</groupId>
+  <groupId>me.lactem.PvZ</groupId>
   <artifactId>PvZ</artifactId>
   <packaging>jar</packaging>
 
@@ -19,9 +19,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>pgDev</groupId>
-      <artifactId>DisguiseCraft</artifactId>
-      <version>5.1</version>
+      <groupId>DisguiseCraft</groupId>
+      <artifactId>5.1</artifactId>
+      <version>DisguiseCraft-5.1.jar</version>
       <scope>provided</scope>
      </dependency>
    </dependencies>
@@ -29,15 +29,19 @@
   <repositories>
     <repository>
       <id>DisguiseCraft</id>
-      <url>http://build.yu8.me:8080/plugin/repository/everything/</url>
-    </repository> 
+      <url>http://build.yu8.me:8080/plugin/repository/everything/pgDev</url>
+    </repository>
+    <repository>
+    	  <id>Bukkit</id>
+    	  <url>http://repo.bukkit.org/content/groups/public</url>
+    </repository>
   </repositories>
   
   <build>
     <resources>
         <resource>
             <targetPath>.</targetPath>
-            <directory>${basedir}/src/main/resources/</directory>
+            <directory>${basedir}/src/resources/</directory>
             <filtering>true</filtering>
             <includes>
                 <include>config.yml</include>
