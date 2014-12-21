@@ -85,17 +85,17 @@ public class CommandManager {
 	 * To manually register a command, use {@link #registerCommand(Class, String, Object...)}.
 	 */
 	public void registerDefaultCommands() {
-		commands.add(registerCommand(WandCommand.class, "wand", "pvz.wand"));
-		commands.add(registerCommand(CreateCommand.class, "create", "pvz.create"));
-		commands.add(registerCommand(AddCommand.class, "add", "pvz.add"));
-		commands.add(registerCommand(SetSpawnCommand.class, "set", "pvz.set", new String[] {"setspawn"}));
-		commands.add(registerCommand(EndpointCommand.class, "endpoint", "pvz.endpoint"));
-		commands.add(registerCommand(JoinCommand.class, "join", "pvz.join"));
-		commands.add(registerCommand(LeaveCommand.class, "leave", "pvz.leave"));
-		commands.add(registerCommand(TypeCommand.class, "type", "pvz.type"));
-		commands.add(registerCommand(CheckCommand.class, "check", "pvz.check"));
-		commands.add(registerCommand(StatsCommand.class, "stats", "pvz.stats"));
-		commands.add(registerCommand(ListCommand.class, "list", "pvz.list"));
-		commands.add(registerCommand(ResetCommand.class, "reset", "pvz.reset"));
+		commands.add(registerCommand(WandCommand.class, "wand", "pvz.admin.wand"));
+		commands.add(registerCommand(CreateCommand.class, "create", "pvz.admin.create"));
+		commands.add(registerCommand(AddCommand.class, "add", "pvz.adin.add"));
+		commands.add(registerCommand(SetSpawnCommand.class, "set", "pvz.admin.set", new String[] { "setspawn" }));
+		commands.add(registerCommand(EndpointCommand.class, "endpoint", "pvz.admin.endpoint"));
+		commands.add(registerCommand(JoinCommand.class, "join", "pvz.user.join"));
+		commands.add(registerCommand(LeaveCommand.class, "leave", "pvz.user.leave"));
+		commands.add(registerCommand(TypeCommand.class, "type", "pvz.user.type"));
+		commands.add(registerCommand(CheckCommand.class, "check", "pvz.admin.check"));
+		commands.add(registerCommand(StatsCommand.class, "stats", "pvz.user.stats"));
+		commands.add(registerCommand(ListCommand.class, "list", "pvz.admin.list"));
+		commands.add(registerCommand(ResetCommand.class, "reset", "pvz.admin.reset"));
 	}
 }

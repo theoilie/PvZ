@@ -40,7 +40,7 @@ public class Main extends JavaPlugin {
 			if (!api.getValidate().areArgs(args, player))
 				return true;
 			
-			for (PvZCommand pvzCmd : api.getCmdManager().getRegisteredCommands().toArray(new PvZCommand[0])) {
+			for (PvZCommand pvzCmd : api.getCmdManager().getRegisteredCommands()) {
 				if (pvzCmd.isAcceptedLabel(args[0])) {
 					pvzCmd.execute(player, args);
 					return true;

@@ -130,9 +130,7 @@ public class Selection {
 		Block block = null;
 		String[] stringBlock = str.split(",");
 		World world = Bukkit.getWorld(stringBlock[0]);
-		block = world.getBlockAt(Integer.parseInt(stringBlock[1]),
-				Integer.parseInt(stringBlock[2]),
-				Integer.parseInt(stringBlock[3]));
+		block = world.getBlockAt(Integer.parseInt(stringBlock[1]), Integer.parseInt(stringBlock[2]), Integer.parseInt(stringBlock[3]));
 		return block;
 	}
 

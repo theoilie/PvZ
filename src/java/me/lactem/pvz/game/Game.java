@@ -7,13 +7,13 @@ import java.util.UUID;
 import me.lactem.pvz.Main;
 import me.lactem.pvz.farm.Farm;
 import me.lactem.pvz.row.TempRow;
+import me.lactem.pvz.scoreboard.PvZBoard;
+import me.lactem.pvz.scoreboard.PvZPreBoard;
 import me.lactem.pvz.tasks.GameRunnable;
 import me.lactem.pvz.team.plant.PlantTeam;
 import me.lactem.pvz.team.zombie.ZombieTeam;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.Scoreboard;
 
 public class Game {
 	private int slot;
@@ -27,7 +27,8 @@ public class Game {
 	private int timeUntilStart = Main.getAPI().getFileUtils().getConfig().getInt("time until start") + 1;
 	private PlantTeam plants = new PlantTeam();
 	private ZombieTeam zombies = new ZombieTeam();
-	private Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+	private PvZBoard board;
+	private PvZPreBoard preBoard;
 	private ArrayList<TempRow> rows = new ArrayList<TempRow>();
 	private ArrayList<UUID> frozen = new ArrayList<UUID>();
 	private ArrayList<UUID> inCooldown = new ArrayList<UUID>();
@@ -39,6 +40,8 @@ public class Game {
 		this.list = list;
 		this.farm = Main.getAPI().getFarmManager().readFarm(farm + ".txt");
 		this.maxPlayers = maxPlayers;
+		preBoard = new PvZPreBoard(this);
+		board = new PvZBoard(this);
 	}
 
 	public int getSlot() {
@@ -129,12 +132,20 @@ public class Game {
 		this.rows = rows;
 	}
 
-	public Scoreboard getBoard() {
+	public PvZBoard getBoard() {
 		return board;
 	}
 
-	public void setBoard(Scoreboard board) {
+	public void setBoard(PvZBoard board) {
 		this.board = board;
+	}
+	
+	public PvZPreBoard getPreBoard() {
+		return preBoard;
+	}
+
+	public void setPreBoard(PvZPreBoard preBoard) {
+		this.preBoard = preBoard;
 	}
 
 	public ArrayList<UUID> getFrozen() {
@@ -167,5 +178,7 @@ public class Game {
 		setTimeLeft(Main.getAPI().getFileUtils().getConfig().getInt("round length") + 1);
 		setTimeUntilStart(Main.getAPI().getFileUtils().getConfig().getInt("time until start") + 1);
 		setState(GameState.WAITING);
+		board.reload(this);
+		preBoard.reload(this);
 	}
 }

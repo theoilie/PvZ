@@ -28,6 +28,8 @@ public class Countdown extends BukkitRunnable {
 			this.cancel();
 		}
 		
+		game.getPreBoard().update();
+		
 		if ((game.getTimeUntilStart() % 5 == 0 || game.getTimeUntilStart() < 6) && game.getTimeUntilStart() != 0) {
 			alertTeam(game.getPlants().getMembers().keySet().iterator());
 			alertTeam(game.getZombies().getMembers().keySet().iterator());
@@ -38,8 +40,11 @@ public class Countdown extends BukkitRunnable {
 		while (iterator.hasNext()) {
 			uuid = iterator.next();
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if (player.getUniqueId() == uuid)
+				if (player.getUniqueId() == uuid) {
 					api.getMessageUtil().sendMessage(player, api.getMessageUtil().getMessage("starts in").replaceAll("<time>", game.getTimeUntilStart() + ""));
+					if (!player.getScoreboard().equals(game.getPreBoard().getBoard()))
+						player.setScoreboard(game.getPreBoard().getBoard());
+				}
 			}
 		}
 	}

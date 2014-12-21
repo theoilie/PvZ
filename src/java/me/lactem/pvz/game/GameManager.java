@@ -18,8 +18,6 @@ import me.lactem.pvz.team.zombie.ZombieType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -110,10 +108,7 @@ public class GameManager {
 		updateRows(game);
 		game.setState(GameState.PLAYING);
 		api.getInvManager().updateDesc(game);
-		Scoreboard board = game.getBoard();
-		Objective objective = board.registerNewObjective("name", "dummy");
-		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-		objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', api.getFileUtils().getConfig().getString("prefix")));
+		Scoreboard board = game.getBoard().getBoard();
 		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
 		while (i.hasNext()) {
 			UUID uuid = i.next();
@@ -208,8 +203,6 @@ public class GameManager {
 	 * @param game the game to restart
 	 */
 	public void restartGame(Game game) {
-		game.getBoard().clearSlot(DisplaySlot.SIDEBAR);
-		game.setBoard(Bukkit.getScoreboardManager().getNewScoreboard());
 		boolean sql = api.getSqlUtil().isUsingMySQL();
 		Iterator<UUID> i = game.getPlants().getMembers().keySet().iterator();
 		while (i.hasNext()) {
@@ -218,7 +211,7 @@ public class GameManager {
 				if (player.getUniqueId() == uuid) {
 					player.teleport(player.getWorld().getSpawnLocation());
 					api.getInvManager().removeInventory(player);
-					player.setScoreboard(game.getBoard());
+					player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 					api.getSqlUtil().setGamesPlayed(player.getUniqueId(), api.getSqlUtil().getGamesPlayed(player.getUniqueId(), sql) + 1, sql);
 					api.getSqlUtil().setSun(player.getUniqueId(), api.getSqlUtil().getSun(player.getUniqueId(), sql) + api.getFileUtils().getConfig().getInt("sun per game"), sql);
 				}
@@ -231,7 +224,7 @@ public class GameManager {
 				if (player.getUniqueId() == uuid) {
 					player.teleport(player.getWorld().getSpawnLocation());
 					api.getInvManager().removeInventory(player);
-					player.setScoreboard(game.getBoard());
+					player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 					api.getSqlUtil().setGamesPlayed(player.getUniqueId(), api.getSqlUtil().getGamesPlayed(player.getUniqueId(), sql) + 1, sql);
 					api.getSqlUtil().setSun(player.getUniqueId(), api.getSqlUtil().getSun(player.getUniqueId(), sql) + api.getFileUtils().getConfig().getInt("sun per game"), sql);
 				}
